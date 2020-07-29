@@ -1,7 +1,5 @@
 package top.gabin.patterns.factory.method;
 
-import top.gabin.patterns.factory.method.*;
-
 public class Tests {
 
     public static void main(String[] args) {
