@@ -1,5 +1,8 @@
 package top.gabin.patterns.observable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tests {
     public static void main(String[] args) {
         register();
@@ -8,9 +11,27 @@ public class Tests {
 
     private static void shopping() {
         Event shopping = Event.SHOPPING;
-        shopping.addListener(eventData -> System.out.println("购物发送微信通知"));
-        shopping.addListener(eventData -> System.out.println("购物发送短信通知"));
-        EventData eventData = new EventData(shopping, 1);
+        // 假设现在需要多种发送消息的方式，这边采取简单的硬编码，实际这种类型的模块功能也不会一直变
+        // 对单个事件监听再分发不同的任务，理论上也算是一种观察者模式
+        List<MessageSend> messageSendList = new ArrayList<>();
+        messageSendList.add(msg -> {
+            System.out.println("微信通知：" + msg);
+            return true;
+        });
+        messageSendList.add(msg -> {
+            System.out.println("短信通知：" + msg);
+            return true;
+        });
+        shopping.addListener(new Listener() {
+            private List<MessageSend> messageSendListT = messageSendList;
+            @Override
+            public void handle(EventData eventData) {
+                messageSendListT.forEach(messageSend -> messageSend.send(eventData.getData().toString()));
+            }
+        });
+        shopping.addListener(eventData -> System.out.println("购物送积分"));
+
+        EventData eventData = new EventData(shopping, "您已成功购买一台傻瓜机");
         eventData.notifyAllObserver();
     }
 
