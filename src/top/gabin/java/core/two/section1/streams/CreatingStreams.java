@@ -1,4 +1,4 @@
-package top.gabin.patterns.java.core.two.section1.streams;
+package top.gabin.java.core.two.section1.streams;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
