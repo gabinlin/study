@@ -1,22 +1,12 @@
 package top.gabin.patterns.factory.method;
 
+import java.util.ServiceLoader;
+
 public class Tests {
 
     public static void main(String[] args) {
-        createFlight();
-        createHotel();
-    }
-
-    private static void createFlight() {
-        FlightOrderFactory flightOrderFactory = new FlightOrderFactory();
-        Order order = flightOrderFactory.createOrder(new FlightOrderForm());
-        System.out.println(order.getType());
-    }
-
-    private static void createHotel() {
-        HotelOrderFactory hotelOrderFactory = new HotelOrderFactory();
-        Order order = hotelOrderFactory.createOrder(new HotelOrderForm());
-        System.out.println(order.getType());
+        ServiceLoader<OrderFactory> load = ServiceLoader.load(OrderFactory.class);
+        load.iterator().forEachRemaining(orderFactory -> System.out.println(orderFactory.toString()));
     }
 
 }
