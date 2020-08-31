@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -13,7 +14,7 @@ public class BlockQueueTest {
 
     private static final int QUEUE_SIZE = 10;
     private static final int SEARCH_THREADS = 100;
-    private static final Path DUMMY = Path.of("");
+    private static final Path DUMMY = Paths.get("");
     private static BlockingQueue<Path> queue = new ArrayBlockingQueue(QUEUE_SIZE);
 
     public static void main(String[] args) {
@@ -24,7 +25,7 @@ public class BlockQueueTest {
             String keyword = in.nextLine();
 
             Runnable emuFiles = () -> {
-                emuFile(Path.of(directory));
+                emuFile(Paths.get(directory));
                 try {
                     queue.put(DUMMY);
                 } catch (InterruptedException e) {
@@ -57,7 +58,7 @@ public class BlockQueueTest {
     }
 
     private static void searchFile(Path file, String keyword) {
-        try (Scanner in = new Scanner(file, StandardCharsets.UTF_8)) {
+        try (Scanner in = new Scanner(file, String.valueOf(StandardCharsets.UTF_8))) {
             int lineNumber = 0;
             while (in.hasNextLine()) {
                 String nextLine = in.nextLine();

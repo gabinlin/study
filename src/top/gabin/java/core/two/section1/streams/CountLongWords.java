@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 public class CountLongWords {
@@ -17,7 +17,7 @@ public class CountLongWords {
         String regex = "\\PL+";
         String[] split = content.split(regex);
         long count = 0;
-        for (String s : List.of(split)) {
+        for (String s : Arrays.asList(split)) {
             if (s.length() > 12) count++;
         }
         System.out.println(count);
