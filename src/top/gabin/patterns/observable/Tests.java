@@ -1,5 +1,6 @@
 package top.gabin.patterns.observable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tests {
@@ -13,15 +14,18 @@ public class Tests {
         // 假设现在需要多种发送消息的方式，这边采取简单的硬编码，实际这种类型的模块功能也不会一直变
         // 对单个事件监听再分发不同的任务，理论上也算是一种观察者模式
         // 日志写错了，是java8支持接口有静态方法
-        List<MessageSend> messageSendList = List.of(msg -> {
+        List<MessageSend> messageSendList = new ArrayList<>();
+        messageSendList.add(msg -> {
             System.out.println("微信通知：" + msg);
             return true;
-        }, msg -> {
+        });
+        messageSendList.add(msg -> {
             System.out.println("短信通知：" + msg);
             return true;
         });
         shopping.addListener(new Listener() {
             private List<MessageSend> messageSendListT = messageSendList;
+
             @Override
             public void handle(EventData eventData) {
                 messageSendListT.forEach(messageSend -> messageSend.send(eventData.getData().toString()));
