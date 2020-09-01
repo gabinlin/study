@@ -32,7 +32,7 @@ import java.util.List;
  * <p>
  * ###########################################################################
  */
-public class OOMTest1 {
+public class OOMPSAndPOTest1 {
 
     public static void main(String[] args) {
         List<Object> objects = new ArrayList<>();
