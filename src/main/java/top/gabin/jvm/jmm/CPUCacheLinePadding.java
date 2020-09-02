@@ -1,4 +1,4 @@
-package top.gabin.jmm;
+package top.gabin.jvm.jmm;
 
 /**
  * CPU，硬件级别的缓存是一行读取的，一般是64位

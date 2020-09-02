@@ -1,4 +1,4 @@
-package top.gabin.jmm;
+package top.gabin.jvm.jmm;
 
 /**
  * 存在一个WCBuffer的缓存，四个槽

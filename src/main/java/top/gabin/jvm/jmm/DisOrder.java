@@ -1,4 +1,4 @@
-package top.gabin.jmm;
+package top.gabin.jvm.jmm;
 
 /**
  * CPU重排序的问题
