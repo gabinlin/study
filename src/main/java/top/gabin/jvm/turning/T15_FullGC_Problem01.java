@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 从数据库中读取信用数据，套用模型，并把结果进行记录和传输
+ * 任务池里面的任务越来越多，这种类型的，看起来最好在执行的时候才加载数据会好点
  */
 
 public class T15_FullGC_Problem01 {
