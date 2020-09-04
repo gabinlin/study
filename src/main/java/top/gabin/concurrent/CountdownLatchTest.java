@@ -9,7 +9,7 @@ import java.util.concurrent.CountDownLatch;
 public class CountdownLatchTest {
 
     private volatile static Object single;
-    private static CountDownLatch get = new CountDownLatch(1);
+    private final static CountDownLatch get = new CountDownLatch(1);
 
     public static Object getSingle() throws InterruptedException {
         get.await();
@@ -34,6 +34,8 @@ public class CountdownLatchTest {
             get.countDown();
         }).start();
 
+
+        // 适用于读写分离类型的场景，写控制单线程，则读只需要通过Volatile保证可见性即可
     }
 
 }
