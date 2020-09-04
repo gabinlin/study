@@ -11,6 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * 2、可以使用tryLock
  * 3、条件等待
  * 4、指定获取锁的超时时间
+ * 5、CAS实现机制
  */
 public class ReentrantLockTest {
     public static void main(String[] args) throws InterruptedException {
