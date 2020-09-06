@@ -1,10 +1,6 @@
 package top.gabin.concurrent.collection;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class HashMapAndTreeMapTest {
 
@@ -38,7 +34,7 @@ public class HashMapAndTreeMapTest {
 
     private static void testDel(Map<Object, Object> map) {
         long start = System.nanoTime();
-        Set<Object> objectSet = map.keySet().stream().collect(Collectors.toSet());
+        Set<Object> objectSet = new HashSet<>(map.keySet());
         for (Object o : objectSet) {
             map.remove(o);
         }
