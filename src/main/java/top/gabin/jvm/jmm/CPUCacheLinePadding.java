@@ -1,5 +1,7 @@
 package top.gabin.jvm.jmm;
 
+import sun.misc.Contended;
+
 /**
  * CPU，硬件级别的缓存是一行读取的，一般是64位
  * <p>
@@ -13,9 +15,10 @@ package top.gabin.jvm.jmm;
 public class CPUCacheLinePadding {
 
     static class DataContainer {
-        private volatile long p1, p2, p3, p4, p5, p6, p7;
+//        private volatile long p1, p2, p3, p4, p5, p6, p7;
+        @Contended // 需要加上-XX:-RestrictContended 【1.8】，更推荐这种用法，可以让jvm根据实际的硬件去优化
         public volatile long data; // 真正有用的数据
-        private volatile long p8, p9, p10, p11, p12, p13, p14;
+//        private volatile long p8, p9, p10, p11, p12, p13, p14;
 
     }
 
