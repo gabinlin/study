@@ -1,15 +1,44 @@
 spring:
   application:
+    # 应用名称，服务中心注册的是这个，同名被认为是同一个服务
     name: eureka-server
+eureka:
+  client:
+    # 是否注册到服务中心，一般服务中心本身不注册到服务中心是可以的
+    register-with-eureka: true
+    # 设置成true的时候，启动的时候会同步服务中心的注册信息（这个是客户端的操作）
+    fetch-registry: true
+  server:
+    # 快速下线设置
+#    enable-self-preservation: false
+#    eviction-interval-timer-in-ms: 1000
+#    use-read-only-response-cache: false
+#    response-cache-auto-expiration-in-seconds: 1
+
+    # 自我保护，开启自我保护的不会直接从注册表剔除，需要满足一定的续约（心跳）条件之后才会被剔除
+    enable-self-preservation: true
+    # 续约的比例
+    renewal-percent-threshold: 0.85
+    # 快速下线，高可用性的提升（有些掉线的服务还一直挂在服务中心，但是没法使用）
+    eviction-interval-timer-in-ms: 1000
+    # 默认true，设置为false，则直接从write缓存读取，不从read缓存读（read缓存是定时从write缓存同步的）
+    use-read-only-response-cache: true
+    # 定时从write缓存同步到read缓存的时间，CAP中的C，一致性提升
+#    response-cache-update-interval-ms: 1000
+    # 自动失效
+#    response-cache-auto-expiration-in-seconds: 1
 ---
 spring:
+  # 可以被认为用于区分不同的配置环境用
   profiles:
     peer1
 eureka:
   client:
+    # 配置服务中心地址
     serviceUrl:
       defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/,http://peer3:8763/eureka/
   instance:
+    # 域名地址，不过个人感觉应该生产环境用集群内的高并发会比较多，应该会用内网IP吧
     hostname: peer1
 server:
   port: 8761
