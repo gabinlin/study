@@ -359,19 +359,21 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
     }
 
     /**
-     * Marks the given instance of the given app name as renewed, and also marks whether it originated from
-     * replication.
+     * 给定应用程序名称的给定实例标记为已更新，并标记它是否来自复制。
      *
      * @see com.netflix.eureka.lease.LeaseManager#renew(java.lang.String, java.lang.String, boolean)
      */
     public boolean renew(String appName, String id, boolean isReplication) {
+        // 更新续约的统计信息，不是复制的话，也要统计到私有的信息中
         RENEW.increment(isReplication);
+        // 获取注册表信息
         Map<String, Lease<InstanceInfo>> gMap = registry.get(appName);
         Lease<InstanceInfo> leaseToRenew = null;
         if (gMap != null) {
             leaseToRenew = gMap.get(id);
         }
         if (leaseToRenew == null) {
+            // 如果不存在租约信息，则还未注册，统计续约未成功获取的信息，非复制的话，私有信息也要更新
             RENEW_NOT_FOUND.increment(isReplication);
             logger.warn("DS: Registry: lease doesn't exist, registering resource: {} - {}", appName, id);
             return false;
@@ -382,11 +384,13 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                 InstanceStatus overriddenInstanceStatus = this.getOverriddenInstanceStatus(
                         instanceInfo, leaseToRenew, isReplication);
                 if (overriddenInstanceStatus == InstanceStatus.UNKNOWN) {
+                    // 未知状态，也和不存在注册信息一样处理
                     logger.info("Instance status UNKNOWN possibly due to deleted override for instance {}"
                             + "; re-register required", instanceInfo.getId());
                     RENEW_NOT_FOUND.increment(isReplication);
                     return false;
                 }
+                // 两者状态不一致情况下，以覆盖状态为准
                 if (!instanceInfo.getStatus().equals(overriddenInstanceStatus)) {
                     logger.info(
                             "The instance status {} is different from overridden instance status {} for instance {}. "
@@ -397,7 +401,9 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
 
                 }
             }
+            // 增加当前采样间隔内的计数。
             renewsLastMin.increment();
+            // 更新续约后的时间
             leaseToRenew.renew();
             return true;
         }
