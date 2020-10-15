@@ -11,7 +11,8 @@ import org.apache.rocketmq.remoting.exception.RemotingException;
 @Slf4j
 public class Test {
 
-    public static void main(String[] args) throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
+    @org.junit.jupiter.api.Test
+    public void test() throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
         TransactionMQProducer producer = new TransactionMQProducer("group-gabin");
         producer.setNamesrvAddr("localhost:9876");
         producer.start();
